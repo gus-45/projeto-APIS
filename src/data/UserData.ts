@@ -1,0 +1,43 @@
+import { User } from "../types/User";
+
+export const users: User[] = [
+  { id: 1, name: "Marcos Silva", email: "joao@email.com", age: 19 },
+  { id: 2, name: "Maria Souza", email: "maria@email.com", age: 67 },
+  { id: 3, name: "Carlos Pereira", email: "carlos@email.com", age: 34 },
+  { id: 4, name: "Gustavo Soares", email: "gustavo@email.com", age: 20 }
+];
+
+export class UserData {
+  static findUserById(id: number): User | undefined {
+    return users.find(u => u.id === id);
+  }
+
+  static findUsersByAgeRange(min: number, max: number): User[] {
+    return users.filter(u => u.age >= min && u.age <= max);
+  }
+
+  static updateUser(id: number, updatedData: Partial<User>): User | undefined {
+    const userIndex = users.findIndex(u => u.id === id);
+
+    if (userIndex === -1) {
+      return undefined;
+    }
+
+    users[userIndex] = { ...users[userIndex], ...updatedData };
+    return users[userIndex];
+  }
+
+  // Vai resetar o array de usuários para os dados originais, para teste
+  static resetUsers(): void {
+    users.length = 0; // vai limpa o array atual
+    users.push(      // vai adiciona os dados originais novamente
+      { id: 1, name: "Marcos Silva", email: "joao@email.com", age: 19 },
+      { id: 2, name: "Maria Souza", email: "maria@email.com", age: 67 },
+      { id: 3, name: "Carlos Pereira", email: "carlos@email.com", age: 34 },
+      { id: 4, name: "Gustavo Soares", email: "gustavo@email.com", age: 20 }
+    );
+  }
+  static getAllUsers(): User[] {
+    return users;
+  }
+}
