@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { UserBusiness } from "../business/UserBusiness";
 
 export class UserController {
-  // Exercício 1
+  // Exercício 1 
   static getUserById(req: Request, res: Response) {
     const userId = +req.params.id;
 
@@ -33,7 +33,6 @@ export class UserController {
     const min = Number(req.query.min);
     const max = Number(req.query.max);
 
-    // está verificando se os números são válidos
     if (isNaN(min) || isNaN(max)) {
       return res.status(400).json({
         success: false,
@@ -91,7 +90,7 @@ export class UserController {
     });
   }
 
-  // permitindo voltar ao estado inicial dos dados através da requisição POST e resetar ps dados da API
+  // Resetar usuários 
   static resetUsers(req: Request, res: Response) {
     UserBusiness.resetUsers();
     return res.status(200).json({
@@ -100,12 +99,31 @@ export class UserController {
     });
   }
 
-  //isso visualizar o estado atual de todos os dados e lista os usuarios
+  // Lista todos os usuários
   static getAllUsers(req: Request, res: Response) {
     const allUsers = UserBusiness.getAllUsers();
     return res.status(200).json({
       success: true,
       data: allUsers
+    });
+  }
+
+  // Exercício 7
+  static removerUsuariosInativos(req: Request, res: Response) {
+    const confirm = req.query.confirm === "true";
+
+    const result = UserBusiness.removerUsuariosInativos(confirm);
+
+    if (typeof result === "string") {
+      return res.status(400).json({
+        success: false,
+        message: result
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      removidos: result
     });
   }
 }
