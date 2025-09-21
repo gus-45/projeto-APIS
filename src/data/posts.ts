@@ -1,3 +1,3 @@
 import { Post } from "../types/Post";
 
-export const posts: Post[] = []; // inicial vazio
+export const posts: Post[] = []; //inicia vazio, pois não criou nada ainda
