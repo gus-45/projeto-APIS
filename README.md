@@ -93,7 +93,9 @@ Objetivo: Remover usuários inativos com confirmação
 
 
 🧪 Rotas Auxiliares para Testes
-Função	Método	Endpoint
+
+
 📋 Listar todos os usuários	GET	http://localhost:3000/users
+
 
 🔄 Resetar dados	GET	http://localhost:3000/users/reset
