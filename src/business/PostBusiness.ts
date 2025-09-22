@@ -1,12 +1,12 @@
 import { Post } from "../types/Post";
 import { PostData } from "../data/PostData";
 import { UserBusiness } from "./UserBusiness";
-import { User } from "../types/User"; // Importando o tipo User se necessário
+import { User } from "../types/User"; 
 
 export class PostBusiness {
-  // Exercício 3 - Criar post
+  // Exercício 3 
   static createPost(title: string, content: string, authorId: number): Post | string {
-    // Validações
+    
     if (title.length < 3) return "O título deve ter no mínimo 3 caracteres";
     if (content.length < 10) return "O conteúdo deve ter no mínimo 10 caracteres";
     
@@ -19,7 +19,8 @@ export class PostBusiness {
       content,
       authorId,
       createdAt: new Date(),
-      published: false
+      published: false,
+      
     };
 
     return PostData.addPost(newPost);

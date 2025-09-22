@@ -90,7 +90,7 @@ export class UserController {
     });
   }
 
-  // Resetar usuários 
+  // reseta 
   static resetUsers(req: Request, res: Response) {
     UserBusiness.resetUsers();
     return res.status(200).json({
@@ -99,7 +99,7 @@ export class UserController {
     });
   }
 
-  // Lista todos os usuários
+  // lista os usuários
   static getAllUsers(req: Request, res: Response) {
     const allUsers = UserBusiness.getAllUsers();
     return res.status(200).json({

@@ -3,13 +3,13 @@ import { UserController } from "../controller/UserController";
 
 const router = Router();
 
-// GET para listar todos os usuários
+
 router.get("/", UserController.getAllUsers);
 
 // Exercício 2 
 router.get("/age-range", UserController.getUsersByAgeRange);
 
-// resetar os dados
+// reseta
 router.post("/reset", UserController.resetUsers);
 
 // Exercício 1 
