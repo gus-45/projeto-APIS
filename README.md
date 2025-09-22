@@ -2,21 +2,30 @@
 
 
 🔍 Exercício 1 - GET com Route Parameter
+
 Método: GET
+
 Endpoint: http://localhost:3000/users/1
+
 Objetivo: Buscar um usuário específico pelo ID
 
 
 
 🔍 Exercício 2 - GET com Query Parameters
+
 Método: GET
+
 Endpoint: http://localhost:3000/users/age-range?min=18&max=30
+
 Objetivo: Filtrar usuários por faixa etária
 
 
 ➕ Exercício 3 - POST com Validações
+
 Método: POST
+
 Endpoint: http://localhost:3000/posts
+
 Body:
 
 json
@@ -29,8 +38,11 @@ json
 
 
 ✏️ Exercício 4 - PUT (Atualização Completa)
+
 Método: PUT
+
 Endpoint: http://localhost:3000/users/1
+
 Body:
 
 json
@@ -44,8 +56,11 @@ json
 
 
 🎯 Exercício 5 - PATCH (Atualização Parcial)
+
 Método: PATCH
+
 Endpoint: http://localhost:3000/posts/1
+
 Body:
 
 json
@@ -56,16 +71,22 @@ json
 
 
 🗑️ Exercício 6 - DELETE com Autorização
+
 Método: DELETE
+
 Endpoint: http://localhost:3000/posts/1
+
 Header: User-Id: 1
+
 Objetivo: Remover post com verificação de autorização
 
 
 
 🧹 Exercício 7 - DELETE Condicional
 Método: DELETE
+
 Endpoint: http://localhost:3000/users/cleanup-inactive?confirm=true
+
 Objetivo: Remover usuários inativos com confirmação
 
 
@@ -74,4 +95,5 @@ Objetivo: Remover usuários inativos com confirmação
 🧪 Rotas Auxiliares para Testes
 Função	Método	Endpoint
 📋 Listar todos os usuários	GET	http://localhost:3000/users
+
 🔄 Resetar dados	GET	http://localhost:3000/users/reset
