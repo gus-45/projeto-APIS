@@ -8,16 +8,16 @@ const router = Router();
 // pega todos os usuarios
 router.get('/users', UserController.getAllUsers);
 
-// Exercício 2 
+// 2 
 router.get("/age-range", UserController.getUsersByAgeRange);
 
-// Exercício 1 
+//1 
 router.get("/:id", UserController.getUserById);
 
-// Exercício 4 
+// 4 
 router.put("/:id", UserController.updateUser);
 
-// Exercício 7
+// 7
 router.delete("/cleanup-inactive", UserController.removerUsuariosInativos);
 
 export default router;

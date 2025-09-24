@@ -6,13 +6,13 @@ import { PostController } from "../controller/PostController";
 const router = Router();
 
 
-// Exercício 3
+// 3
 router.post("/", PostController.createPost);
 
-// Exercício 5
+//5
 router.patch("/:id", PostController.atualizarPostParcial);
 
-// Exercício 6 
+//6 
 router.delete("/:id", PostController.removerPost);
 
 export default router;
