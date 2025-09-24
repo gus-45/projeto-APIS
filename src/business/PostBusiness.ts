@@ -1,3 +1,5 @@
+// aqui fica todas as regras de negocio do post
+
 import { Post } from "../types/Post";
 import { PostData } from "../data/PostData";
 import { UserBusiness } from "./UserBusiness";

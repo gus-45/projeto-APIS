@@ -1,3 +1,5 @@
+// aqui fica a tipagem do user
+
 export interface User {
   id: number;
   name: string;

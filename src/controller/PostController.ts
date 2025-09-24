@@ -1,3 +1,6 @@
+// aqui fica a comunicação para o business, requisição e resposta para o usuario e validações minimas do post
+// o thiago concordou em deixar as validações minimas aqui ( não esquece)
+
 import { Request, Response } from "express";
 import { PostBusiness } from "../business/PostBusiness";
 
@@ -20,7 +23,8 @@ export class PostController {
       message: "Post criado com sucesso",
       data: result
     });
-  }
+
+  } 
 
   // Exercício 5
   static atualizarPostParcial(req: Request, res: Response) {

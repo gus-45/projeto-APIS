@@ -1,16 +1,15 @@
+//aqui fica as rotas do users
+
 import { Router } from "express";
 import { UserController } from "../controller/UserController";
 
 const router = Router();
 
-
-router.get("/", UserController.getAllUsers);
+// pega todos os usuarios
+router.get('/users', UserController.getAllUsers);
 
 // Exercício 2 
 router.get("/age-range", UserController.getUsersByAgeRange);
-
-// reseta
-router.post("/reset", UserController.resetUsers);
 
 // Exercício 1 
 router.get("/:id", UserController.getUserById);

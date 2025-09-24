@@ -1,3 +1,5 @@
+// aqui fica regras de negocios do users/get
+
 import { UserData, users } from "../data/UserData";
 import { User } from "../types/User";
 import { PostData } from "../data/PostData";
@@ -37,11 +39,7 @@ export class UserBusiness {
     return updatedUser || "Usuário não encontrado";
   }
 
-  // Resetar dados
-  static resetUsers(): void {
-    UserData.resetUsers();
-  }
-
+ 
   // todos os usuários
   static getAllUsers(): User[] {
     return users;

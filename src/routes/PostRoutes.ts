@@ -1,7 +1,10 @@
+// aqui fica as rotas do post
+
 import { Router } from "express";
 import { PostController } from "../controller/PostController";
 
 const router = Router();
+
 
 // Exercício 3
 router.post("/", PostController.createPost);

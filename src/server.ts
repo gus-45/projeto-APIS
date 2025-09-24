@@ -1,3 +1,5 @@
+// arquivo principal
+
 import express from "express";
 import userRoutes from "./routes/UserRouter";
 import postRoutes from "./routes/PostRoutes";

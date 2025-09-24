@@ -1,3 +1,5 @@
+// aqui fica apenas o banco de dados
+
 import { User } from "../types/User";
 
 export const users: User[] = [

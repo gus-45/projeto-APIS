@@ -1,3 +1,5 @@
+// aqui fica a comunicação para o business, requisição e resposta para o usuario e validações minimas do post
+
 import { Request, Response } from "express";
 import { UserBusiness } from "../business/UserBusiness";
 
@@ -90,16 +92,9 @@ export class UserController {
     });
   }
 
-  // reseta 
-  static resetUsers(req: Request, res: Response) {
-    UserBusiness.resetUsers();
-    return res.status(200).json({
-      success: true,
-      message: "Dados resetados com sucesso"
-    });
-  }
+ 
 
-  // lista os usuários
+  // para lista os usuários
   static getAllUsers(req: Request, res: Response) {
     const allUsers = UserBusiness.getAllUsers();
     return res.status(200).json({
