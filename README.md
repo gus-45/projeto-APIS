@@ -98,4 +98,4 @@ Objetivo: Remover usuários inativos com confirmação
 📋 Listar todos os usuários	GET	http://localhost:3000/users
 
 
-🔄 Resetar dados	GET	http://localhost:3000/users/reset
+
