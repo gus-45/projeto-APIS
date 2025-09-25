@@ -122,6 +122,7 @@ export class UserController {
       const allUsers = UserBusiness.getAllUsers();
       return res.status(200).json({
         success: true,
+        message: "Usuarios retornados com sucesso",
         data: allUsers
       });
     } catch (error) {
