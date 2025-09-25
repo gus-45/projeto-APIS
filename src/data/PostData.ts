@@ -32,8 +32,10 @@ export class PostData {
   static getPostsByAuthor(authorId: number): Post[] {
     return posts.filter(p => p.authorId === authorId);
   }
-
-  static resetPosts(): void {
-    posts = []; // limpa
+  
+   static getAllPosts(): Post[] {
+    console.log(`Buscando todos os posts. Total: ${posts.length}`);
+    return posts;
   }
+
 }

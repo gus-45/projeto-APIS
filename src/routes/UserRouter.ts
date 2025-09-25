@@ -11,7 +11,7 @@ router.get('/users', UserController.getAllUsers);
 // 2 
 router.get("/age-range", UserController.getUsersByAgeRange);
 
-//1 
+// 1 
 router.get("/:id", UserController.getUserById);
 
 // 4 

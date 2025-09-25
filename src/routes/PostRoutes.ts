@@ -5,7 +5,6 @@ import { PostController } from "../controller/PostController";
 
 const router = Router();
 
-
 // 3
 router.post("/", PostController.createPost);
 
