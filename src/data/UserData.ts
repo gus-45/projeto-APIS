@@ -1,3 +1,5 @@
+// eu coloquei a manipulacao e o banco de dados aqui
+
 import { User } from "../types/User";
 
 export const users: User[] = [

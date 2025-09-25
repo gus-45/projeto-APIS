@@ -1,3 +1,5 @@
+// eu coloquei a manipulacao e o banco de dados aqui
+
 import { Post } from "../types/Post";
 
 export let posts: Post[] = [];
