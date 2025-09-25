@@ -1,5 +1,3 @@
-// aqui fica a manipulação do banco de dados e ele
-
 import { User } from "../types/User";
 
 export const users: User[] = [
@@ -10,34 +8,35 @@ export const users: User[] = [
 ];
 
 export class UserData {
-  static getAllUsers(): User[] {
+  static all(): User[] {
     return users;
   }
 
-  static findUserById(id: number): User | undefined {
+  static findById(id: number): User | undefined {
     return users.find(u => u.id === id);
   }
 
-  static findUsersByAgeRange(min: number, max: number): User[] {
+  static findByAge(min: number, max: number): User[] {
     return users.filter(u => u.age >= min && u.age <= max);
   }
 
-  static updateUser(id: number, updatedData: Partial<User>): User | undefined {
-    const userIndex = users.findIndex(u => u.id === id);
-
-    if (userIndex === -1) {
-      return undefined;
-    }
-
-    users[userIndex] = { ...users[userIndex], ...updatedData };
-    return users[userIndex];
+  static add(user: User): User {
+    users.push(user);
+    return user;
   }
 
-  static deleteUser(id: number): void {
+  static update(id: number, data: Partial<User>): User | undefined {
     const index = users.findIndex(u => u.id === id);
-    if (index !== -1) {
-      users.splice(index, 1);
-    }
+    if (index === -1) return undefined;
+
+    users[index] = { ...users[index], ...data };
+    return users[index];
   }
 
+  static remove(id: number): boolean {
+    const index = users.findIndex(u => u.id === id);
+    if (index === -1) return false;
+    users.splice(index, 1);
+    return true;
+  }
 }
