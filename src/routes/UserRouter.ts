@@ -1,23 +1,26 @@
-//aqui fica as rotas do users
-
+// userRoutes.ts - Rotas dos usuários
 import { Router } from "express";
 import { UserController } from "../controller/UserController";
 
 const router = Router();
 
-// pega todos os usuarios
-router.get('/users', UserController.getAllUsers);
+// Listar todos os usuários
+router.get('/', UserController.getAllUsers);
 
-// 2 
+// Filtrar usuários por faixa etária  
 router.get("/age-range", UserController.getUsersByAgeRange);
 
-// 1 
+// Buscar usuário por ID
 router.get("/:id", UserController.getUserById);
 
-// 4 
-router.put("/:id", UserController.updateUser);
+// Substituir usuário completamente (PUT)
+router.put("/:id", UserController.replaceUser);
 
-// 7
-router.delete("/cleanup-inactive", UserController.removerUsuariosInativos);
+// Atualizar usuário parcialmente (PATCH)
+router.patch("/:id", UserController.updateUser);
+
+// Remover usuários inativos
+router.delete("/cleanup-inactive", UserController.removeInactiveUsers);
 
 export default router;
+

@@ -1,17 +1,19 @@
-// aqui fica as rotas do post
-
+// postRoutes.ts - Rotas dos posts
 import { Router } from "express";
 import { PostController } from "../controller/PostController";
 
 const router = Router();
 
-// 3
+// Listar todos os posts
+router.get("/", PostController.getAllPosts);
+
+// Criar novo post
 router.post("/", PostController.createPost);
 
-//5
-router.patch("/:id", PostController.atualizarPostParcial);
+// Atualizar post (apenas PATCH para posts)
+router.patch("/:id", PostController.updatePost);
 
-//6 
-router.delete("/:id", PostController.removerPost);
+// Remover post
+router.delete("/:id", PostController.deletePost);
 
 export default router;

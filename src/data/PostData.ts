@@ -1,38 +1,52 @@
-// eu coloquei a manipulacao e o banco de dados aqui
+// Camada de dados - Simulação do banco de dados para posts
 
 import { Post } from "../types/Post";
 
+// "Banco de dados" em memória
 export let posts: Post[] = [];
 
 export class PostData {
-  static all(): Post[] {
+  
+  // Listar todos os posts
+  static getAllPosts() {
     return posts;
   }
 
-  static findById(id: number): Post | undefined {
-    return posts.find(p => p.id === id);
+  // Buscar post por ID
+  static getPostById(id: number) {
+    return posts.find(post => post.id === id);
   }
 
-  static findByAuthor(authorId: number): Post[] {
-    return posts.filter(p => p.authorId === authorId);
+  // Buscar posts por autor
+  static getPostsByAuthor(authorId: number) {
+    return posts.filter(post => post.authorId === authorId);
   }
 
-  static add(post: Post): Post {
+  // Adicionar novo post
+  static addPost(post: any) {
     posts.push(post);
     return post;
   }
 
-  static update(id: number, changes: Partial<Post>): Post | undefined {
-    const index = posts.findIndex(p => p.id === id);
-    if (index === -1) return undefined;
+  // Atualizar post
+  static updatePost(id: number, changes: any) {
+    const index = posts.findIndex(post => post.id === id);
+    if (index === -1) {
+      return undefined;
+    }
 
+    // Atualizar apenas os campos fornecidos
     posts[index] = { ...posts[index], ...changes };
     return posts[index];
   }
 
-  static remove(id: number): boolean {
-    const index = posts.findIndex(p => p.id === id);
-    if (index === -1) return false;
+  // Remover post
+  static deletePost(id: number) {
+    const index = posts.findIndex(post => post.id === id);
+    if (index === -1) {
+      return false;
+    }
+
     posts.splice(index, 1);
     return true;
   }

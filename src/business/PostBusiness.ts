@@ -1,83 +1,80 @@
-// aqui fica todas as regras de negocio do post
+// Business - Regras de negócio dos posts
 
 import { Post } from "../types/Post";
 import { PostData } from "../data/PostData";
 import { UserBusiness } from "./UserBusiness";
-import { User } from "../types/User"; 
 
 export class PostBusiness {
-  // 3 
-  static createPost(title: string, content: string, authorId: number): Post | string {
-    try {
-      if (title.length < 3) return "O título deve ter no mínimo 3 caracteres";
-      if (content.length < 10) return "O conteúdo deve ter no mínimo 10 caracteres";
-      
-      const user = UserBusiness.getUserById(authorId);
-      if (!user) return "Autor não encontrado";
-
-      const newPost: Post = {
-        id: Date.now(),
-        title,
-        content,
-        authorId,
-        createdAt: new Date(),
-        published: false,
-      };
-
-      return PostData.addPost(newPost);
-    } catch (error) {
-      console.error("Erro em createPost:", error);
-      return "Erro interno ao criar post";
-    }
+  
+  // EXEMPLO - Listar todos os posts
+  static getAllPosts() {
+    return PostData.getAllPosts();
   }
 
-  // 5
-  static atualizarPostParcial(id: number, alteracoes: Partial<Post>): Post | string {
-    try {
-      const camposPermitidos = ["title", "content", "published"];
-      const camposInvalidos = Object.keys(alteracoes).filter(
-        campo => !camposPermitidos.includes(campo)
-      );
-
-      if (camposInvalidos.length > 0) {
-        return `Campos não permitidos: ${camposInvalidos.join(", ")}`;
-      }
-
-      const postAtualizado = PostData.updatePostPartial(id, alteracoes);
-      if (!postAtualizado) return "Post não encontrado";
-
-      return postAtualizado;
-    } catch (error) {
-      console.error("Erro em atualizarPostParcial:", error);
-      return "Erro interno ao atualizar post";
+  // EXERCÍCIO 3 - Criar novo post
+  static createPost(title: string, content: string, authorId: number) {
+    // Verificar se autor existe
+    const author = UserBusiness.getUserById(authorId);
+    if (!author) {
+      return "Autor não encontrado";
     }
+
+    // Criar novo post
+    const newPost: Post = {
+      id: Date.now(), // ID simples baseado no timestamp
+      title,
+      content,
+      authorId,
+      createdAt: new Date(),
+      published: false
+    };
+
+    return PostData.addPost(newPost);
   }
 
-  // 6 
-  static removerPost(id: number, userId: number): string {
-    try {
-      const post = PostData.getPostById(id);
-      if (!post) return "Post não encontrado";
-
-      const user = UserBusiness.getUserById(userId);
-      if (!user) return "Usuário não encontrado";
-
-      const userRole = (user as any).role; 
-      if (post.authorId !== userId && userRole !== "ADMIN") {
-        return "Você não tem permissão para remover este post";
-      }
-
-      const resultado = PostData.deletePost(id);
-      
-      if (resultado) {
-        return "Post removido com sucesso";
-      }
-      
-      return "Erro ao remover post";
-    } catch (error) {
-      console.error("Erro em removerPost:", error);
-      return "Erro interno ao remover post";
+  // EXERCÍCIO 5 - Atualizar post parcialmente
+  static updatePost(id: number, changes: any) {
+    // Verificar se post existe
+    const existingPost = PostData.getPostById(id);
+    if (!existingPost) {
+      return "Post não encontrado";
     }
+
+    // Atualizar apenas campos permitidos
+    if (changes.title) {
+      existingPost.title = changes.title;
+    }
+    if (changes.content) {
+      existingPost.content = changes.content;
+    }
+    if (changes.published !== undefined) {
+      existingPost.published = changes.published;
+    }
+
+    return PostData.updatePost(id, existingPost);
   }
 
+  // EXERCÍCIO 6 - Remover post com autorização
+  static deletePost(postId: number, userId: number) {
+    // Verificar se post existe
+    const post = PostData.getPostById(postId);
+    if (!post) {
+      return "Post não encontrado";
+    }
+
+    // Verificar se usuário existe
+    const user = UserBusiness.getUserById(userId);
+    if (!user) {
+      return "Usuário não encontrado";
+    }
+
+    // Verificar permissão: apenas autor do post ou admin podem remover
+    if (post.authorId !== userId && user.role !== "ADMIN") {
+      return "Você não tem permissão para remover este post";
+    }
+
+    // Remover post
+    const wasDeleted = PostData.deletePost(postId);
+    return wasDeleted;
+  }
 }

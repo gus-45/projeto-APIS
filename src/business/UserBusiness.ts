@@ -1,94 +1,97 @@
-// aqui fica regras de negocios do users/get
+// Business - Regras de negócio dos usuários
 
-import { UserData, users } from "../data/UserData";
-import { User } from "../types/User";
+import { UserData } from "../data/UserData";
 import { PostData } from "../data/PostData";
+import { User } from "../types/User";
 
 export class UserBusiness {
-  // 1
-  static getUserById(id: number): User | undefined | string {
-    try {
-      if (id <= 0 || isNaN(id)) {
-        return "ID inválido";
-      }
-      return UserData.findUserById(id) || "Usuário não encontrado";
-    } catch (error) {
-      console.error("Erro em getUserById:", error);
-      return "Erro interno ao buscar usuário";
-    }
+  
+  // EXEMPLO - Listar todos os usuários
+  static getAllUsers() {
+    return UserData.getAllUsers();
   }
 
-  // 2
-  static getUsersByAgeRange(min: number, max: number): User[] | string {
-    try {
-      if (isNaN(min) || isNaN(max)) {
-        return "Parâmetros inválidos";
-      }
-      if (min > max) {
-        return "O valor mínimo não pode ser maior que o máximo";
-      }
-      return UserData.findUsersByAgeRange(min, max);
-    } catch (error) {
-      console.error("Erro em getUsersByAgeRange:", error);
-      return "Erro interno ao buscar usuários por idade";
-    }
+  // EXERCÍCIO 1 - Buscar usuário por ID
+  static getUserById(id: number) {
+    return UserData.getUserById(id);
   }
 
-  // 4 
-  static updateUser(id: number, updatedData: Partial<User>): User | string {
-    try {
-      if (id <= 0 || isNaN(id)) {
-        return "ID inválido";
-      }
-      if (!updatedData.name && !updatedData.email && !updatedData.age) {
-        return "Nenhum dado fornecido para atualização";
-      }
-      if (updatedData.age && updatedData.age < 0) {
-        return "Idade inválida";
-      }
-      const updatedUser = UserData.updateUser(id, updatedData);
-      return updatedUser || "Usuário não encontrado";
-    } catch (error) {
-      console.error("Erro em updateUser:", error);
-      return "Erro interno ao atualizar usuário";
-    }
+  // EXERCÍCIO 2 - Buscar usuários por faixa etária
+  static getUsersByAgeRange(min: number, max: number) {
+    return UserData.getUsersByAgeRange(min, max);
   }
 
-  // todos os usuários
-  static getAllUsers(): User[] {
-    try {
-      return users;
-    } catch (error) {
-      console.error("Erro em getAllUsers:", error);
-      return []; 
+  // EXERCÍCIO 4 - Substituir usuário completamente (PUT)
+  static replaceUser(id: number, userData: any) {
+    // Buscar se usuário existe
+    const existingUser = UserData.getUserById(id);
+    if (!existingUser) {
+      return undefined;
     }
+
+    // Verificar se email já existe em outro usuário
+    if (userData.email) {
+      const userWithEmail = UserData.getUserByEmail(userData.email);
+      if (userWithEmail && userWithEmail.id !== id) {
+        return undefined; // Email já existe
+      }
+    }
+
+    // Substituir TODOS os dados (mantendo apenas o ID original)
+    const newUserData: User = {
+      id: id,
+      name: userData.name,
+      email: userData.email,
+      role: userData.role,
+      age: userData.age
+    };
+
+    return UserData.replaceUser(id, newUserData);
   }
 
-  // 7 
-  static removerUsuariosInativos(confirm: boolean): User[] | string {
-    try {
-      if (!confirm) {
-        return "Confirmação obrigatória (?confirm=true)";
-      }
-
-      const todosUsuarios = UserData.getAllUsers();
-
-      const usuariosInativos = todosUsuarios.filter(u => {
-        if (u.role === "ADMIN") return false;
-        const postsDoUsuario = PostData.getPostsByAuthor(u.id);
-        return postsDoUsuario.length === 0;
-      });
-
-      if (usuariosInativos.length === 0) {
-        return "Nenhum usuário inativo encontrado";
-      }
-
-      usuariosInativos.forEach(u => UserData.deleteUser(u.id));
-
-      return usuariosInativos;
-    } catch (error) {
-      console.error("Erro em removerUsuariosInativos:", error);
-      return "Erro interno ao remover usuários inativos";
+  // EXERCÍCIO 5 - Atualizar usuário parcialmente (PATCH)
+  static updateUser(id: number, updatedData: any) {
+    // Buscar se usuário existe
+    const existingUser = UserData.getUserById(id);
+    if (!existingUser) {
+      return undefined;
     }
+
+    // Verificar se email já existe em outro usuário
+    if (updatedData.email) {
+      const userWithEmail = UserData.getUserByEmail(updatedData.email);
+      if (userWithEmail && userWithEmail.id !== id) {
+        return undefined; // Email já existe
+      }
+    }
+
+    return UserData.updateUser(id, updatedData);
+  }
+
+  // EXERCÍCIO 7 - Remover usuários inativos (sem posts)
+  static removeInactiveUsers() {
+    const allUsers = UserData.getAllUsers();
+    const removedUsers: User[] = [];
+
+    // Procurar usuários sem posts que não sejam admins
+    for (const user of allUsers) {
+      // Não remover administradores
+      if (user.role === "ADMIN") {
+        continue;
+      }
+
+      // Verificar se usuário tem posts
+      const userPosts = PostData.getPostsByAuthor(user.id);
+      
+      if (userPosts.length === 0) {
+        // Usuário sem posts - remover
+        const wasRemoved = UserData.deleteUser(user.id);
+        if (wasRemoved) {
+          removedUsers.push(user);
+        }
+      }
+    }
+
+    return removedUsers;
   }
 }

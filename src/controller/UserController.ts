@@ -1,18 +1,46 @@
-// aqui fica a comunicação para o business, requisição e resposta para o usuario e validações minimas do user
+// Controller responsável por receber requisições, validações básicas e chamar o Business
 
 import { Request, Response } from "express";
 import { UserBusiness } from "../business/UserBusiness";
 
 export class UserController {
-  // 1 
+  
+  // EXEMPLO - GET /users - Listar todos usuários
+  static getAllUsers(req: Request, res: Response) {
+    try {
+      const users = UserBusiness.getAllUsers();
+
+      return res.status(200).json({
+        success: true,
+        message: "Usuários listados com sucesso",
+        data: users,
+        total: users.length
+      });
+    } catch (error) {
+      console.error("Erro em getAllUsers:", error);
+      return res.status(500).json({
+        success: false,
+        message: "Erro interno do servidor"
+      });
+    }
+  }
+
+  // EXERCÍCIO 1 - GET /users/:id - Buscar usuário por ID
   static getUserById(req: Request, res: Response) {
     try {
-      const userId = +req.params.id;
+      const userId = Number(req.params.id);
+      const errors = [];
 
-      if (!userId) {
+      // Validar ID
+      if (!userId || userId <= 0) {
+        errors.push("ID inválido");
+      }
+
+      if (errors.length > 0) {
         return res.status(400).json({
           success: false,
-          message: "ID inválido"
+          message: "Dados inválidos",
+          errors: errors
         });
       }
 
@@ -27,6 +55,7 @@ export class UserController {
 
       return res.status(200).json({
         success: true,
+        message: "Usuário encontrado com sucesso",
         data: user
       });
     } catch (error) {
@@ -38,23 +67,29 @@ export class UserController {
     }
   }
 
-  // 2
+  // EXERCÍCIO 2 - GET /users/age-range?min=25&max=35 - Filtrar por faixa etária
   static getUsersByAgeRange(req: Request, res: Response) {
     try {
       const min = Number(req.query.min);
       const max = Number(req.query.max);
+      const errors = [];
 
-      if (isNaN(min) || isNaN(max)) {
-        return res.status(400).json({
-          success: false,
-          message: "Parâmetros inválidos"
-        });
+      // Validar parâmetros
+      if (!min || min <= 0) {
+        errors.push("Parâmetro min é obrigatório");
+      }
+      if (!max || max <= 0) {
+        errors.push("Parâmetro max é obrigatório");
+      }
+      if (min && max && min > max) {
+        errors.push("Min não pode ser maior que max");
       }
 
-      if (min > max) {
+      if (errors.length > 0) {
         return res.status(400).json({
           success: false,
-          message: "O valor mínimo não pode ser maior que o máximo"
+          message: "Parâmetros inválidos",
+          errors: errors
         });
       }
 
@@ -62,7 +97,9 @@ export class UserController {
 
       return res.status(200).json({
         success: true,
-        data: users
+        message: "Usuários filtrados com sucesso",
+        data: users,
+        total: users.length
       });
     } catch (error) {
       console.error("Erro em getUsersByAgeRange:", error);
@@ -73,23 +110,85 @@ export class UserController {
     }
   }
 
-  // 4
-  static updateUser(req: Request, res: Response) {
+  // EXERCÍCIO 4 - PUT /users/:id - Atualização completa
+  static replaceUser(req: Request, res: Response) {
     try {
-      const userId = +req.params.id;
-      const { name, email, age } = req.body;
+      const userId = Number(req.params.id);
+      const { name, email, role, age } = req.body;
+      const errors = [];
 
-      if (!userId) {
+      // Validar ID
+      if (!userId || userId <= 0) {
+        errors.push("ID inválido");
+      }
+
+      // PUT exige TODOS os campos
+      if (!name) {
+        errors.push("Nome é obrigatório");
+      }
+      if (!email) {
+        errors.push("Email é obrigatório");
+      }
+      if (!role) {
+        errors.push("Role é obrigatório");
+      }
+      if (!age) {
+        errors.push("Idade é obrigatória");
+      }
+
+      if (errors.length > 0) {
         return res.status(400).json({
           success: false,
-          message: "ID inválido"
+          message: "Dados inválidos",
+          errors: errors
         });
       }
 
+      const replacedUser = UserBusiness.replaceUser(userId, { name, email, role, age });
+
+      if (!replacedUser) {
+        return res.status(404).json({
+          success: false,
+          message: "Usuário não encontrado"
+        });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: "Usuário substituído com sucesso",
+        data: replacedUser
+      });
+    } catch (error) {
+      console.error("Erro em replaceUser:", error);
+      return res.status(500).json({
+        success: false,
+        message: "Erro interno do servidor"
+      });
+    }
+  }
+
+  // EXERCÍCIO 4 - PATCH /users/:id - Atualização parcial
+  static updateUser(req: Request, res: Response) {
+    try {
+      const userId = Number(req.params.id);
+      const { name, email, age } = req.body;
+      const errors = [];
+
+      // Validar ID
+      if (!userId || userId <= 0) {
+        errors.push("ID inválido");
+      }
+
+      // Validar se tem dados para atualizar
       if (!name && !email && !age) {
+        errors.push("Nenhum dado fornecido");
+      }
+
+      if (errors.length > 0) {
         return res.status(400).json({
           success: false,
-          message: "Nenhum dado fornecido para atualização"
+          message: "Dados inválidos",
+          errors: errors
         });
       }
 
@@ -116,44 +215,33 @@ export class UserController {
     }
   }
 
-  // lista todos os usuários
-  static getAllUsers(req: Request, res: Response) {
-    try {
-      const allUsers = UserBusiness.getAllUsers();
-      return res.status(200).json({
-        success: true,
-        message: "Usuarios retornados com sucesso",
-        data: allUsers
-      });
-    } catch (error) {
-      console.error("Erro em getAllUsers:", error);
-      return res.status(500).json({
-        success: false,
-        message: "Erro interno do servidor"
-      });
-    }
-  }
-
-  // 7
-  static removerUsuariosInativos(req: Request, res: Response) {
+  static removeInactiveUsers(req: Request, res: Response) {
     try {
       const confirm = req.query.confirm === "true";
+      const errors = [];
 
-      const result = UserBusiness.removerUsuariosInativos(confirm);
+      if (!confirm) {
+        errors.push("Confirmação obrigatória");
+      }
 
-      if (typeof result === "string") {
+      if (errors.length > 0) {
         return res.status(400).json({
           success: false,
-          message: result
+          message: "Confirmação necessária",
+          errors: errors
         });
       }
 
+      const removedUsers = UserBusiness.removeInactiveUsers();
+
       return res.status(200).json({
         success: true,
-        removidos: result
+        message: "Usuários inativos removidos com sucesso",
+        data: removedUsers,
+        total: removedUsers.length
       });
     } catch (error) {
-      console.error("Erro em removerUsuariosInativos:", error);
+      console.error("Erro em removeInactiveUsers:", error);
       return res.status(500).json({
         success: false,
         message: "Erro interno do servidor"

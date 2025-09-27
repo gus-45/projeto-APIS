@@ -1,43 +1,74 @@
-// eu coloquei a manipulacao e o banco de dados aqui
+// Camada de dados - Simulação do banco de dados para usuários
 
 import { User } from "../types/User";
 
+// "Banco de dados" em memória
 export const users: User[] = [
-  { id: 1, name: "Marcos Silva", email: "joao@email.com", age: 19, role: "USER" },
+  { id: 1, name: "Marcos Silva", email: "marcos@email.com", age: 19, role: "USER" },
   { id: 2, name: "Maria Souza", email: "maria@email.com", age: 67, role: "ADMIN" },
   { id: 3, name: "Carlos Pereira", email: "carlos@email.com", age: 34, role: "USER" },
   { id: 4, name: "Gustavo Soares", email: "gustavo@email.com", age: 20, role: "USER" }
 ];
 
 export class UserData {
-  static all(): User[] {
+  
+  // Listar todos os usuários
+  static getAllUsers() {
     return users;
   }
 
-  static findById(id: number): User | undefined {
-    return users.find(u => u.id === id);
+  // Buscar usuário por ID
+  static getUserById(id: number) {
+    return users.find(user => user.id === id);
   }
 
-  static findByAge(min: number, max: number): User[] {
-    return users.filter(u => u.age >= min && u.age <= max);
+  // Buscar usuário por email
+  static getUserByEmail(email: string) {
+    return users.find(user => user.email === email);
   }
 
-  static add(user: User): User {
+  // Buscar usuários por faixa etária
+  static getUsersByAgeRange(min: number, max: number) {
+    return users.filter(user => user.age >= min && user.age <= max);
+  }
+
+  // Adicionar novo usuário
+  static addUser(user: any) {
     users.push(user);
     return user;
   }
 
-  static update(id: number, data: Partial<User>): User | undefined {
-    const index = users.findIndex(u => u.id === id);
-    if (index === -1) return undefined;
+  // Atualizar usuário (parcial)
+  static updateUser(id: number, data: any) {
+    const index = users.findIndex(user => user.id === id);
+    if (index === -1) {
+      return undefined;
+    }
 
+    // Atualizar apenas os campos fornecidos
     users[index] = { ...users[index], ...data };
     return users[index];
   }
 
-  static remove(id: number): boolean {
-    const index = users.findIndex(u => u.id === id);
-    if (index === -1) return false;
+  // Substituir usuário completamente (PUT)
+  static replaceUser(id: number, newUser: any) {
+    const index = users.findIndex(user => user.id === id);
+    if (index === -1) {
+      return undefined;
+    }
+
+    // Substitui o usuário inteiro (mantendo o id passado)
+    users[index] = newUser;
+    return users[index];
+  }
+
+  // Remover usuário
+  static deleteUser(id: number) {
+    const index = users.findIndex(user => user.id === id);
+    if (index === -1) {
+      return false;
+    }
+
     users.splice(index, 1);
     return true;
   }
