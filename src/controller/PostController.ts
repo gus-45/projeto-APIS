@@ -1,11 +1,9 @@
-// Controller responsável por receber requisições de posts e chamar o Business
-
 import { Request, Response } from "express";
 import { PostBusiness } from "../business/PostBusiness";
 
 export class PostController {
 
-  // EXEMPLO - GET /posts - Listar todos os posts
+ 
   static getAllPosts(req: Request, res: Response) {
     try {
       const posts = PostBusiness.getAllPosts();
@@ -30,7 +28,7 @@ export class PostController {
       const { title, content, authorId } = req.body;
       const errors = [];
 
-      // Validar título
+      
       if (!title) {
         errors.push("Título é obrigatório");
       }
@@ -38,7 +36,7 @@ export class PostController {
         errors.push("Título muito curto");
       }
 
-      // Validar conteúdo
+     
       if (!content) {
         errors.push("Conteúdo é obrigatório");
       }
@@ -46,7 +44,7 @@ export class PostController {
         errors.push("Conteúdo muito curto");
       }
 
-      // Validar autor
+      
       if (!authorId) {
         errors.push("ID do autor é obrigatório");
       }
@@ -89,7 +87,6 @@ export class PostController {
       const { title, content, published } = req.body;
       const errors = [];
 
-      // Validar ID
       if (!postId || postId <= 0) {
         errors.push("ID inválido");
       }
@@ -144,7 +141,7 @@ export class PostController {
       const userId = Number(req.header("User-Id") || "0");
       const errors = [];
 
-      // Validar IDs
+      
       if (!postId || postId <= 0) {
         errors.push("ID do post inválido");
       }

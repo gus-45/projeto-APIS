@@ -1,11 +1,9 @@
-// Controller responsável por receber requisições, validações básicas e chamar o Business
-
 import { Request, Response } from "express";
 import { UserBusiness } from "../business/UserBusiness";
 
 export class UserController {
   
-  // EXEMPLO - GET /users - Listar todos usuários
+  
   static getAllUsers(req: Request, res: Response) {
     try {
       const users = UserBusiness.getAllUsers();
@@ -25,13 +23,12 @@ export class UserController {
     }
   }
 
-  // EXERCÍCIO 1 - GET /users/:id - Buscar usuário por ID
+  // 1
   static getUserById(req: Request, res: Response) {
     try {
       const userId = Number(req.params.id);
       const errors = [];
 
-      // Validar ID
       if (!userId || userId <= 0) {
         errors.push("ID inválido");
       }
@@ -67,14 +64,14 @@ export class UserController {
     }
   }
 
-  // EXERCÍCIO 2 - GET /users/age-range?min=25&max=35 - Filtrar por faixa etária
+  // 2
   static getUsersByAgeRange(req: Request, res: Response) {
     try {
       const min = Number(req.query.min);
       const max = Number(req.query.max);
       const errors = [];
 
-      // Validar parâmetros
+     
       if (!min || min <= 0) {
         errors.push("Parâmetro min é obrigatório");
       }
@@ -110,19 +107,19 @@ export class UserController {
     }
   }
 
-  // EXERCÍCIO 4 - PUT /users/:id - Atualização completa
+  // 4
   static replaceUser(req: Request, res: Response) {
     try {
       const userId = Number(req.params.id);
       const { name, email, role, age } = req.body;
       const errors = [];
 
-      // Validar ID
+     
       if (!userId || userId <= 0) {
         errors.push("ID inválido");
       }
 
-      // PUT exige TODOS os campos
+     
       if (!name) {
         errors.push("Nome é obrigatório");
       }
@@ -167,19 +164,18 @@ export class UserController {
     }
   }
 
-  // EXERCÍCIO 4 - PATCH /users/:id - Atualização parcial
+  // 4
   static updateUser(req: Request, res: Response) {
     try {
       const userId = Number(req.params.id);
       const { name, email, age } = req.body;
       const errors = [];
 
-      // Validar ID
+  
       if (!userId || userId <= 0) {
         errors.push("ID inválido");
       }
-
-      // Validar se tem dados para atualizar
+    
       if (!name && !email && !age) {
         errors.push("Nenhum dado fornecido");
       }

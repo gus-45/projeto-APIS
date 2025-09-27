@@ -1,5 +1,3 @@
-// aqui fica a tipagem do post
-
 export interface Post {
     id: number;
     title: string;
