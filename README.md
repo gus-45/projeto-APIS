@@ -92,10 +92,7 @@ Objetivo: Remover usuários inativos com confirmação
 
 
 
-🧪 Rotas Auxiliares para Testes
 
-
-📋 Listar todos os usuários	GET	http://localhost:3000/users
 
 
 
